@@ -1,4 +1,22 @@
-# Byte-compiled / optimized / DLL files
+# ERA5, GPM and SRTM datasets
+*.nc
+*.nc4
+*.grib
+*.grb
+*.h5
+*.hdf5
+*.tif
+*.tiff
+
+# Local data folders
+data/raw/
+data/processed/
+
+# Credentials
+.env
+.env.*
+*.pem
+*.key# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
