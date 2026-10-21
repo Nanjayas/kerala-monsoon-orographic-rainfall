@@ -1,4 +1,4 @@
-# Kerala_mansoon_orographic_rainfall
+# Kerala_monsoon_orographic_rainfall
 
 # GPM IMERG rainfall processing
 
