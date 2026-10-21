@@ -1,6 +1,6 @@
 # ERA5 Near-Surface Moisture Processing (JJAS 2020)
 
-Script: `ERA5/tdps_map.py`. Output map: `docs/figures/era5/tdps_jjas2020_mean.png`.
+Script: `doc/script/era5/tdps_map.py`. Output map: `docs/figures/era5/tdps_jjas2020_mean.png`.
 
 This file complements the main `methodology.md`.
 
