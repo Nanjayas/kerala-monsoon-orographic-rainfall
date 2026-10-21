@@ -1,0 +1,10 @@
+
+#!/bin/bash
+# ERA5 seasonal mean wind processing
+# Kerala, JJAS 2020, 700 hPa
+
+cd "$HOME/kerala_project/data/era5" || exit 1
+
+cdo timmean -mergetime ua_700hPa_kerala_202006.nc ua_700hPa_kerala_202007.nc ua_700hPa_kerala_202008.nc ua_700hPa_kerala_202009.nc ua_700hPa_JJAS2020_mean.nc
+
+cdo timmean -mergetime va_700hPa_kerala_202006.nc va_700hPa_kerala_202007.nc va_700hPa_kerala_202008.nc va_700hPa_kerala_202009.nc va_700hPa_JJAS2020_mean.nc
