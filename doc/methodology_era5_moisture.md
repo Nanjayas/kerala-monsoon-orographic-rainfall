@@ -11,7 +11,7 @@ This file complements the main `methodology.md`.
 | Variable | `tdps`, 2 m dew point temperature |
 | Path | `/daten/erafive/arch/data/dkrz-sync/ERA5/day/atmos/tdps/r1i1p1/` |
 | Grid | about 0.28° (global 1280 x 640) |
-| Domain | 74-78°E, 8-13°N (18 x 14 grid points) |
+| Domain | 72-79°E, 7-14°N (18 x 14 grid points) |
 | Period | 1 June - 30 September 2020 (122 days) |
 
 ## Method
