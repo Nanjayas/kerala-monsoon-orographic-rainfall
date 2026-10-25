@@ -9,7 +9,7 @@ Notebook: `01_imreg_download_june2020.ipynb` (updated to cover JJAS 2020). Outpu
 | Source | NASA GES DISC, downloaded with the `earthaccess` Python package |
 | Variable | `precipitation` (mm/day) |
 | Resolution | 0.1° |
-| Domain | 74-78°E, 8-13°N (40 x 50 grid points) |
+| Domain | 72-79°E, 7-14°N (40 x 50 grid points) |
 | Period | 1 June - 30 September 2020 (122 days) |
 
 ## Method
