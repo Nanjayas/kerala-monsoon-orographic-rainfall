@@ -8,7 +8,7 @@ ds = xr.open_dataset(f)
 
 # JJAS 2020, Kerala box, converted from Kelvin to degrees C
 t = ds["tdps"].sel(time=slice("2020-06-01", "2020-09-30"),
-                   lon=slice(74, 78), lat=slice(8, 13)) - 273.15
+                   lon=slice(72, 79), lat=slice(7, 14)) - 273.15
 t.attrs["units"] = "degC"
 
 # Save the small cropped data (a few hundred KB)
