@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 f = "/daten/erafive/arch/data/dkrz-sync/ERA5/day/atmos/tdps/r1i1p1/tdps_day_reanalysis_era5_r1i1p1_20200101-20201231.nc"
 ds = xr.open_dataset(f)
 
-# JJAS 2020, Kerala box, converted from Kelvin to degrees C
+# JJAS 2020, study box 72-79E,7-14N converted from Kelvin to degrees C
 t = ds["tdps"].sel(time=slice("2020-06-01", "2020-09-30"),
                    lon=slice(72, 79), lat=slice(7, 14)) - 273.15
 t.attrs["units"] = "degC"
