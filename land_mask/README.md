@@ -1,4 +1,4 @@
-1. ERA5 Land-Only Winds — Kerala and Western Ghats (JJAS 2020)
+# 1. ERA5 Land-Only Winds — Kerala and Western Ghats (JJAS 2020)
 Overview
 This dataset contains daily mean ERA5 horizontal wind components at 700 hPa for June–September (JJAS) 2020 over the Kerala–Western Ghats study region. The winds have been masked to retain predominantly land-covered grid cells for comparison with SRTM terrain elevation and gradients.
 
