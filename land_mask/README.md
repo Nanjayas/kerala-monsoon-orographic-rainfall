@@ -1,3 +1,8 @@
+This folder contains scripts and data processing files
+related to land masking for the Kerala monsoon
+orographic rainfall project.
+
+
 # 1. ERA5 Land-Only Winds — Kerala and Western Ghats (JJAS 2020)
 Overview
 This dataset contains daily mean ERA5 horizontal wind components at 700 hPa for June–September (JJAS) 2020 over the Kerala–Western Ghats study region. The winds have been masked to retain predominantly land-covered grid cells for comparison with SRTM terrain elevation and gradients.
@@ -47,6 +52,17 @@ The land-only ERA5 wind figure displays:
 - Arrows: direction and relative strength of the JJAS-mean horizontal wind.
 - Blank cells: excluded by the land mask.# Land Masking
 
+  Scientific interpretation and limitations
+- 700 hPa is an atmospheric pressure level, not a measurement of near-surface wind. Winds at this level should not automatically be interpreted as flow following local slopes.
+- The mask is used to support land-based statistical comparisons. Excluded offshore winds remain relevant for understanding Arabian Sea moisture transport and should be retained in the unmasked files.
+- The domain includes land outside Kerala; the 225 selected cells are not a Kerala-only administrative boundary.
+- The 50% land-fraction threshold can exclude partially coastal cells; it is a documented methodological choice rather than an exact coastline.
+- Winds alone cannot explain rainfall. Subsequent analyses will incorporate specific humidity, terrain gradients, and GPM IMERG precipitation.
+Next steps
+1. Check that ERA5 wind, specific-humidity, and terrain grids and timestamps align exactly.
+2. Integrate GPM IMERG precipitation on the common grid.
+3. Examine circulation, moisture availability, and terrain-related uplift in relation to observed rainfall, while noting the limitations of using 700-hPa winds for terrain-following ascent.
+
   
 ---
 
@@ -93,18 +109,3 @@ The land-only total keeps the pattern of the full-grid map. The wettest cells li
 - Add SRTM elevation on the same land cells.
 - Relate land-only rainfall to elevation and the ERA5 variables.
 - Check whether a lower threshold (to keep more coastal cells) changes the results.
-
-This folder contains scripts and data processing files
-related to land masking for the Kerala monsoon
-orographic rainfall project.
-
-Scientific interpretation and limitations
-- 700 hPa is an atmospheric pressure level, not a measurement of near-surface wind. Winds at this level should not automatically be interpreted as flow following local slopes.
-- The mask is used to support land-based statistical comparisons. Excluded offshore winds remain relevant for understanding Arabian Sea moisture transport and should be retained in the unmasked files.
-- The domain includes land outside Kerala; the 225 selected cells are not a Kerala-only administrative boundary.
-- The 50% land-fraction threshold can exclude partially coastal cells; it is a documented methodological choice rather than an exact coastline.
-- Winds alone cannot explain rainfall. Subsequent analyses will incorporate specific humidity, terrain gradients, and GPM IMERG precipitation.
-Next steps
-1. Check that ERA5 wind, specific-humidity, and terrain grids and timestamps align exactly.
-2. Integrate GPM IMERG precipitation on the common grid.
-3. Examine circulation, moisture availability, and terrain-related uplift in relation to observed rainfall, while noting the limitations of using 700-hPa winds for terrain-following ascent.
