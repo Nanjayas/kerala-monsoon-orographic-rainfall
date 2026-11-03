@@ -110,7 +110,7 @@ The land-only total keeps the pattern of the full-grid map. The wettest cells li
 - Relate land-only rainfall to elevation and the ERA5 variables.
 - Check whether a lower threshold (to keep more coastal cells) changes the results.
 
-- SRTM Topography — Land-Only Elevation and Terrain Gradients
+SRTM Topography — Land-Only Elevation and Terrain Gradients
 Kerala and Western Ghats Southwest Monsoon Project | JJAS 2020 pilot study
 
 This folder documents the preparation of SRTM-derived topography for the Kerala–Western Ghats study area. Elevation and terrain-gradient fields were harmonized to the regional ERA5 grid and then restricted to predominantly land-covered cells. They are intended for comparison with ERA5 winds, specific humidity, and, in a later step, GPM IMERG precipitation.
