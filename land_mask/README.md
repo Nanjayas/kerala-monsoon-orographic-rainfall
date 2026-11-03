@@ -109,3 +109,106 @@ The land-only total keeps the pattern of the full-grid map. The wettest cells li
 - Add SRTM elevation on the same land cells.
 - Relate land-only rainfall to elevation and the ERA5 variables.
 - Check whether a lower threshold (to keep more coastal cells) changes the results.
+
+- SRTM Topography — Land-Only Elevation and Terrain Gradients
+Kerala and Western Ghats Southwest Monsoon Project | JJAS 2020 pilot study
+
+This folder documents the preparation of SRTM-derived topography for the Kerala–Western Ghats study area. Elevation and terrain-gradient fields were harmonized to the regional ERA5 grid and then restricted to predominantly land-covered cells. They are intended for comparison with ERA5 winds, specific humidity, and, in a later step, GPM IMERG precipitation.
+Status: Elevation and both terrain-gradient components have been processed, land-masked, checked for missing land values, and plotted. Rainfall–orography relationships have not yet been evaluated.
+
+1. Study area and target grid
+Property	Value
+Study region	72–79°E, 7–14°N (Kerala, Western Ghats and surrounding area)
+Target grid	Regional ERA5 Gaussian latitude–longitude grid
+Grid dimensions	25 × 25 = 625 cells
+Longitude centers	72.0°E to 78.75°E, in 0.28125° increments
+Latitude centers	Approximately 7.166°N to 13.911°N (Gaussian spacing)
+Land selection	ERA5 sftlf > 50%
+Predominantly land cells	225
+Excluded cells	400 (predominantly ocean, by the land-fraction rule)
+
+
+The final files retain the 25 × 25 rectangular grid; excluded cells are represented as missing (NaN) rather than cropped away. The study area includes neighboring land and is not a Kerala administrative-boundary mask.
+2. Source data
+Topography: NASA Shuttle Radar Topography Mission (SRTM), SRTMGL1_NC Version 003, approximately 1 arc-second (~30 m nominal sampling). The processing started from 47 downloaded NetCDF elevation tiles covering the region. The SRTM data were mosaicked and processed using GDAL, CDO, Python, NumPy and xarray.
+
+Land fraction: The institute's fixed ERA5 land-area fraction field, sftlf, with units of percent (%). Cells were retained when more than half of the grid-cell area was classified as land. The land-mask file used in this workflow was data/common_grid/land_mask_kerala.nc.
+
+ERA5 reference grid: The regional 700-hPa ERA5 wind dataset provided the 25 × 25 target grid for regridding terrain fields.
+3. Processing workflow
+1. Mosaic and inspect SRTM tiles. The original SRTM tiles were combined to cover 72–79°E and 7–14°N. A high-resolution elevation mosaic was inspected for valid elevations and missing areas.
+2. Harmonize elevation. The SRTM elevation was aggregated/remapped to the regional ERA5 Gaussian grid, producing srtm_elevation_era5grid.nc.
+3. Calculate geographic terrain gradients. Eastward and northward partial derivatives were calculated from the ERA5-scale elevation field using NumPy finite differences and geographic distance conversion. The result was saved as srtm_gradients_era5scale.nc.
+4. Construct the land mask. The static ERA5 sftlf field was extracted to the study area, and grid cells with sftlf > 50% were assigned a value of 1. Other cells were assigned 0.
+5. Verify grid compatibility. The elevation and land-mask grids were checked to have identical Gaussian grid centers, cell bounds, and 25 × 25 dimensions.
+6. Apply the land mask without altering originals. Elevation and gradients were kept only where the mask equals 1; masked outputs were saved separately.
+7. Validate and plot. Counts of valid land elevations and gradients were checked before creating the land-only figures.
+Geographic gradient definitions
+Let \(h(\lambda,\phi)\) denote elevation in metres, where \(\lambda\) and \(\phi\) are longitude and latitude in radians. For Earth radius \(R\), the approximate eastward and northward terrain gradients on a geographic grid are
+\[
+\frac{\partial h}{\partial x}=\frac{1}{R\cos\phi}\frac{\partial h}{\partial\lambda},
+\qquad
+\frac{\partial h}{\partial y}=\frac{1}{R}\frac{\partial h}{\partial\phi}.
+\]
+The numerical derivatives were estimated with numpy.gradient, using the actual latitude and longitude coordinate values. Both components have units of m/m (dimensionless height change per unit horizontal distance):
+- dh_dx > 0: terrain rises toward the east.
+- dh_dx < 0: terrain falls toward the east.
+- dh_dy > 0: terrain rises toward the north.
+- dh_dy < 0: terrain falls toward the north.
+These coarse-grid derivatives describe terrain variation at the ERA5-grid scale, not the original 30-m SRTM scale. Separate preliminary fine-scale gradient products also exist, but they should not be confused with these east/north derivatives without checking their projection and directional definitions.
+4. Land-only datasets
+The following filenames describe outputs on the FU server relative to the project directory ~/kerala_project/.
+File	Variable	Description
+data/common_grid/land_mask_kerala.nc	sftlf (binary after thresholding)	1 for land fraction > 50%, otherwise 0
+data/srtm/srtm_elevation_landonly_era5grid.nc	Band1	Land-only elevation (m)
+data/srtm/srtm_gradients_landonly_era5grid.nc	dh_dx, dh_dy	Land-only eastward and northward elevation gradients (m/m)
+
+
+Upstream/intermediate products retained: data/srtm/srtm_elevation_era5grid.nc and data/srtm/srtm_gradients_era5scale.nc. Original SRTM tiles and other higher-resolution intermediates were not overwritten.
+The table describes local scientific data files. They may not all be committed to GitHub, depending on the repository's data-storage policy and .gitignore configuration.
+
+5. Quality-control results
+Check	Result
+Total ERA5 grid cells	625
+Land cells under sftlf > 50%	225
+Valid SRTM elevation values on land	225 / 225
+Missing SRTM elevation values on land	0
+Valid dh_dx values on land	225 / 225
+Valid dh_dy values on land	225 / 225
+Cells with both gradients valid on land	225 / 225
+
+
+For the land-only elevation field, the values printed during plotting were:
+Statistic	Elevation
+Minimum	7 m
+Maximum	1,581 m
+Mean across the 225 selected cells	502.14 m
+
+
+Before masking, the 25 × 25 harmonized elevation field had 195 missing cells across the full geographic box. None of those missing values fell within the 225 selected land cells. This does not imply full original-SRTM coverage everywhere in the broader domain, and the maximum on the coarse grid is not the highest individual mountain summit.
+6. Figures and interpretation
+The land-only plots produced during processing include:
+- Elevation map: data/srtm/srtm_elevation_landonly_era5grid.png — spatial distribution of terrain height over the selected land region.
+- Two-panel gradient figure: data/srtm/srtm_gradients_landonly_era5grid.png — eastward (dh_dx) and northward (dh_dy) gradients, displayed with a zero-centered diverging color scale.
+Other gradient figures were also saved in the project's plotting workflow. Check the actual filenames in figures/ or data/srtm/ before constructing relative Markdown image links in GitHub.
+
+Initial interpretation: Low terrain appears near the western coast, with higher terrain farther inland, consistent with the Western Ghats. The gradient maps indicate where elevation changes with eastward or northward displacement; they do not, by themselves, measure upward atmospheric motion or rainfall.
+7. Why gradients are useful for the monsoon study
+A simplified directional measure of terrain-forced vertical motion is
+\[
+w_{\mathrm{oro}}\approx u\frac{\partial h}{\partial x}
++v\frac{\partial h}{\partial y},
+\]
+where \(u\) and \(v\) are the eastward and northward wind components (m/s), and \(\partial h/\partial x\), \(\partial h/\partial y\) are the dimensionless terrain gradients.
+
+A positive value indicates air flowing toward rising terrain under this simplified kinematic approximation. It is not an observation of vertical wind, and using ERA5 winds at 700 hPa involves a substantial physical limitation: winds aloft may not represent the near-surface flow deflected upward by the mountains. Moisture, atmospheric stability, flow blocking and precipitation dynamics must be considered before interpreting rainfall effects.
+9. Limitations and next steps
+- Spatial representativeness: A 25 × 25 regional grid smooths narrow valleys, sharp ridgelines and individual summits. The grid-cell mean elevation is not point elevation.
+- Land selection: The >50% rule excludes predominantly ocean cells, including some mixed coastal cells. It is not a precise coastline or state-boundary delineation.
+- Differentiation near boundaries: Coarse gradients can be sensitive to coastline treatment and missing neighbors. The 225 selected land cells passed the missing-value check, but derivative quality still deserves assessment.
+- Wind–terrain interpretation: 700-hPa ERA5 winds should not automatically be interpreted as boundary-layer or slope-following winds.
+- Pending analysis: Combine these fields with the already prepared daily ERA5 ua, va and specific humidity q; incorporate GPM IMERG daily rainfall once harmonized; test associations rather than assume causation.
+10. Data acknowledgement
+- SRTM: NASA Shuttle Radar Topography Mission, SRTMGL1_NC Version 003 (via NASA Earthdata / LP DAAC).
+- ERA5 land fraction and target wind grid: ECMWF ERA5 data accessed through the Freie Universität Berlin Institute of Meteorology archive.
+- Tools: GDAL, Climate Data Operators (CDO), Python, NumPy, xarray and Matplotlib.
